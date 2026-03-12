@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import MovieCard from '../components/MovieCard'
+import "../css/Home.css"
 
 const Home = () => {
 
@@ -62,7 +63,7 @@ const Home = () => {
 
                 <MovieCard movie={movie} key={movie.id} />
 
-                
+
                 
             ) )}
         </div>
