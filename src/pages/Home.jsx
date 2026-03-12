@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MovieCard from '../components/MovieCard'
 
 const Home = () => {
+
+    const [searchQuery, setSearchQuery] = useState("");
 
     const movies = [
         {
@@ -11,23 +13,58 @@ const Home = () => {
         },
         {
             id : 2,
-            tittle: "john wick 2",
+            tittle: "terminator 2",
             release_date:  "2022"
         },
         {
             id : 3,
-            tittle: "john wick 3",
+            tittle: "epstein file 3",
             release_date:  "2024"
         }
     ]
 
 
+    const handleSearch = (e) => {
+        e.preventDefault()
+        alert(searchQuery)
+        setSearchQuery("")
+    }
+
 
   return (
     <div className='home' >
+
+        <form onSubmit={handleSearch} className='search_form' >
+
+            <input 
+                type="text" 
+                placeholder='search for movies...' 
+                className='search_input' 
+                value={searchQuery}
+                onChange={ (e) => setSearchQuery(e.target.value) }
+            />
+
+            <button type='submit' className='search_button' >
+                Search
+            </button>
+
+        </form>
         
         <div className='movies_grid' >
-            {movies.map(movie => <MovieCard movie={movie} key={movie.id} /> )}
+            {movies.map(movie => (
+
+                //Conditional rendering 
+
+                /*movie.tittle.toLowerCase().startsWith(searchQuery) && (
+                    <MovieCard movie={movie} key={movie.id} />
+                )*/
+
+
+                <MovieCard movie={movie} key={movie.id} />
+
+                
+                
+            ) )}
         </div>
 
     </div>
