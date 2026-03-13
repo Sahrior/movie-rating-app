@@ -13,7 +13,7 @@ const MovieCard = ({movie}) => {
     <div className='movie_card' >
 
         <div className='movie_poster' >
-            <img src={movie.url} alt={movie.tittle} />
+            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.tittle} />
             <div className='movie_overlay' >
                 <button className='favorite_btn'  onClick={onFavoriteClick}  >
                     {"\u{1F90D}"}
@@ -23,7 +23,7 @@ const MovieCard = ({movie}) => {
 
         <div className='movie_info' >
             <h3>{movie.tittle}</h3>
-            <p> {movie.release_date} </p>
+            <p> {movie.release_date?.split("-")[0]} </p>
         </div>
       
     </div>

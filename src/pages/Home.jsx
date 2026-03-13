@@ -1,33 +1,63 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MovieCard from '../components/MovieCard'
+import { searchMovies, getPopularMovives } from '../services/api'
 import "../css/Home.css"
 
 const Home = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    const movies = [
-        {
-            id : 1,
-            tittle: "john wick",
-            release_date:  "2020"
-        },
-        {
-            id : 2,
-            tittle: "terminator 2",
-            release_date:  "2022"
-        },
-        {
-            id : 3,
-            tittle: "epstein file 3",
-            release_date:  "2024"
+    const [movies, setMovies] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+
+        const loadPopularMovies = async()=>{
+            
+            try{
+                const popularMovies = await getPopularMovives()
+                setMovies(popularMovies)
+            }catch(err){
+                console.log(err);
+                setError("Failed to load movies")
+            }
+
+            finally{
+                setLoading(false)
+            }
+
         }
-    ]
+
+        loadPopularMovies()
+
+    },[])
 
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault()
-        alert(searchQuery)
+        
+
+        if(!searchQuery.trim()) return
+        if(loading) return
+
+        setLoading(true) 
+
+        try{
+
+            const searchResult = await searchMovies(searchQuery)
+            setMovies(searchResult)
+            setError(null)
+
+        }catch(err){
+            console.log(err)
+            setError("Failed to search moives.....")
+        }finally{
+            setLoading(false)
+        }
+
+
+
         setSearchQuery("")
     }
 
@@ -55,6 +85,8 @@ const Home = () => {
             {movies.map(movie => (
 
                 //Conditional rendering 
+
+
 
                 /*movie.tittle.toLowerCase().startsWith(searchQuery) && (
                     <MovieCard movie={movie} key={movie.id} />
